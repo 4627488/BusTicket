@@ -51,13 +51,7 @@
     <None Include="AdminPage.qml">
       <Filter>Resource Files\Source Files</Filter>
     </None>
-    <None Include="CustomerPage.qml">
-      <Filter>Resource Files\Source Files</Filter>
-    </None>
     <None Include="AdminControlPanel.qml">
-      <Filter>Resource Files\Source Files</Filter>
-    </None>
-    <None Include="TableWidget.qml">
       <Filter>Resource Files\Source Files</Filter>
     </None>
   </ItemGroup>

@@ -103,11 +103,9 @@
     <ClCompile Include="Backend.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="TableModel.cpp" />
-    <None Include="TableWidget.qml" />
     <QtRcc Include="qml.qrc" />
     <None Include="AdminControlPanel.qml" />
     <None Include="AdminPage.qml" />
-    <None Include="CustomerPage.qml" />
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 #include <qevent.h>
 #include <QFile>
 #include <qdebug.h>
+#include <QCryptographicHash>
 
 const QString Backend::CONFIG_FILE = "bus.txt";
 // 在类外初始化静态成员
@@ -23,11 +24,18 @@ QList<BusInfo> Backend::getTimetables() {
 	return timetables;
 }
 
+QString Backend::hashPassword(const QString& password) {
+	QCryptographicHash hash(QCryptographicHash::Sha256);
+	hash.addData(password.toUtf8());
+	return hash.result().toHex();
+}
+
 bool Backend::authenticate(const QString& username, const QString& password) {
 	// TODO 从配置文件中读取用户名和密码而不是硬编码
 	const QString storedUsername = "admin";
-	const QString storedPassword = "123";
-	return username == storedUsername && password == storedPassword;
+	//const QString storedPassword = "123";
+	const QString storedHashedPassword = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"; // 123
+	return username == storedUsername && hashPassword(password) == storedHashedPassword;
 }
 
 Q_INVOKABLE QString Backend::add(const QString& trainNumber, const QString& departureTime, const QString& startStation, const QString& endStation, const QString& duration, const QString& price, const QString& capacity, const QString& soldTickets)
@@ -110,6 +118,40 @@ void Backend::saveAllBusInfo() {
 		}
 		file.close();
 	}
+}
+
+Q_INVOKABLE QString Backend::buyTicket(QString busNumber)
+{
+	for (auto& bus : timetables) {
+		if (bus.busNumber == busNumber.toInt()) {
+			if (bus.soldTickets < bus.maxPassenger) {
+				bus.soldTickets++;
+				saveAllBusInfo();
+				return "购票成功";
+			}
+			else {
+				return "车票已售完";
+			}
+		}
+	}
+	return "没有找到该车次";
+}
+
+Q_INVOKABLE QString Backend::refundTicket(QString busNumber)
+{
+	for (auto& bus : timetables) {
+		if (bus.busNumber == busNumber.toInt()) {
+			if (bus.soldTickets > 0) {
+				bus.soldTickets--;
+				saveAllBusInfo();
+				return "退票成功";
+			}
+			else {
+				return "没有车票可退";
+			}
+		}
+	}
+	return "没有找到该车次";
 }
 
 QString Backend::removeBusInfo(QString busNumberStr) {

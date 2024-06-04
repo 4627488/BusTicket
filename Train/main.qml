@@ -26,7 +26,7 @@ ApplicationWindow {
                         id: titleLabel
                         text: "选择身份"
                         //color: "red"
-						font.pixelSize: 20
+						//font.pixelSize: 20
 						horizontalAlignment: Text.AlignHCenter
                         visible: true
                     }
@@ -38,7 +38,17 @@ ApplicationWindow {
 
                     Button {
                         text: "进入普通顾客窗口"
-                        onClicked: stackView.push("CustomerPage.qml")
+                        onClicked: {
+							var component = Qt.createComponent("AdminControlPanel.qml");
+                            if (component.status === Component.Ready) {
+                                var newWindow = component.createObject(parent);
+                                newWindow.isAdmin = false; 
+                                newWindow.show();
+                            } else {
+                                console.log("Error loading window: " + component.errorString());
+                            }
+                            mainWindow.visible = false;
+						}
                     }
 
                     Button {

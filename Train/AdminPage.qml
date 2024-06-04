@@ -30,6 +30,7 @@ Item {
                     var component = Qt.createComponent("AdminControlPanel.qml");
                     if (component.status === Component.Ready) {
                         var newWindow = component.createObject(parent);
+                        newWindow.isAdmin = true; 
                         newWindow.show();
                     } else {
                         console.log("Error loading window: " + component.errorString());

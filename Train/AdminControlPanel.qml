@@ -9,12 +9,13 @@ ApplicationWindow {
     visible: true
     width: 650
     height: 600
-    title: "管理员面板"
+    title: isAdmin ? "管理员面板" : "用户面板"
     Material.theme: Material.Light
     Material.accent: Material.Green
 
     property string filterText: ""
     property int filterOption: 0
+    property bool isAdmin: true
 
     TableView {
         anchors.fill: parent
@@ -38,6 +39,7 @@ ApplicationWindow {
         }
     }
     
+    
     Dialog {
         id: addDialog
         title: "添加新的车次"
@@ -46,6 +48,7 @@ ApplicationWindow {
 
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
+
 
         Column {
             spacing: 10
@@ -130,20 +133,69 @@ ApplicationWindow {
 
         Column {
             spacing: 10
-
-            GridLayout {
-                columns: 2
-
-                TextField {
-                    id: trainNumberField2
-                    placeholderText: "车次号"
-                }
+            TextField {
+                id: trainNumberField2
+                placeholderText: "车次号"
+                validator: IntValidator {} //只允许填数字
             }
+        }
 
+        onAccepted: {
+            var result = backend.removeBusInfo(trainNumberField2.text)
+            trainNumberField2.text = ""
+            tableModel.updateModel() //刷新表格
+            notificationDialog.title = result
+            notificationDialog.open()
+        }
+    }
+
+    Dialog {
+        id: buyDialog
+        title: "购买指定车次"
+        visible: false
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+
+        Column {
+            spacing: 10
+            TextField {
+                id: trainNumberField3
+                placeholderText: "车次号"
+                validator: IntValidator {} //只允许填数字
+            }
         }
         
         onAccepted: {
-            var result = backend.removeBusInfo(trainNumberField2.text)
+            var result = backend.buyTicket(trainNumberField3.text)
+            trainNumberField2.text = ""
+            tableModel.updateModel() //刷新表格
+            notificationDialog.title = result
+            notificationDialog.open()
+        }
+    }
+
+    Dialog {
+        id: refundDialog
+        title: "退票指定车次"
+        visible: false
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+
+        Column {
+            spacing: 10
+            TextField {
+                id: trainNumberField4
+                placeholderText: "车次号"
+                validator: IntValidator {} //只允许填数字
+            }
+        }
+        
+        onAccepted: {
+            var result = backend.refundTicket(trainNumberField4.text)
             trainNumberField2.text = ""
             tableModel.updateModel() //刷新表格
             notificationDialog.title = result
@@ -201,16 +253,16 @@ ApplicationWindow {
         }
 
         Button {
-		    text: "添加"
+		    text: isAdmin ? "添加" : "购票"
 		    onClicked: {
-			    addDialog.open()
+			    isAdmin ? addDialog.open() : buyDialog.open()
 		    }
 	    }
 
         Button {
-		    text: "删除"
+		    text: isAdmin ? "删除" : "退票"
 		    onClicked: {
-			    delDialog.open()
+			    isAdmin ? delDialog.open() : refundDialog.open()
 		    }
 	    }
     }
