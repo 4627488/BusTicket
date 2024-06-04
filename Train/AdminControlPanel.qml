@@ -95,7 +95,7 @@ ApplicationWindow {
         }
 
         onAccepted: {
-            backend.add(trainNumberField.text, departureTimeField.text ,startStationField.text, endStationField.text, durationField.text, priceField.text, capacityField.text, soldTicketsField.text)
+            var result = backend.add(trainNumberField.text, departureTimeField.text ,startStationField.text, endStationField.text, durationField.text, priceField.text, capacityField.text, soldTicketsField.text)
             trainNumberField.text = ""
             departureTimeField.text = ""
 			startStationField.text = ""
@@ -105,16 +105,18 @@ ApplicationWindow {
 			capacityField.text = ""
 			soldTicketsField.text = ""
             tableModel.updateModel() //刷新表格
+            notificationDialog.title = result
+            notificationDialog.open()
         }
     }
     
     Dialog {
         id: notificationDialog
+        standardButtons: Dialog.Ok
         title: "通知"
-        Label {
-            text: "s"
-        }
         visible: false
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
     }
 
     Dialog {
@@ -144,7 +146,7 @@ ApplicationWindow {
             var result = backend.removeBusInfo(trainNumberField2.text)
             trainNumberField2.text = ""
             tableModel.updateModel() //刷新表格
-            notificationDialog.text = result
+            notificationDialog.title = result
             notificationDialog.open()
         }
     }

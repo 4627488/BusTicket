@@ -27,7 +27,7 @@ public:
 	//tableModel.add(trainNumberField.text, departureTimeField.text, startStationField.text, endStationField.text, durationField.text, priceField.text, capacityField.text, soldTicketsField.text)
 	Q_INVOKABLE QString add(const QString& trainNumber, const QString& departureTime, const QString& startStation, const QString& endStation, const QString& duration, const QString& price, const QString& capacity, const QString& soldTickets);
 	void loadBusInfo(const QString& filename);
-	void addBusInfo(const BusInfo& bus);
+	QString addBusInfo(const BusInfo& bus);
 	void displayAllBusInfo();
 	void saveAllBusInfo();
 	Q_INVOKABLE QString removeBusInfo(QString busNumber);

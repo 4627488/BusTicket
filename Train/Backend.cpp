@@ -34,6 +34,9 @@ Q_INVOKABLE QString Backend::add(const QString& trainNumber, const QString& depa
 {
 	try {
 		//转换前检查
+		if (trainNumber.isEmpty() || departureTime.isEmpty() || startStation.isEmpty() || endStation.isEmpty() || duration.isEmpty() || price.isEmpty() || capacity.isEmpty() || soldTickets.isEmpty())
+			return "信息请填写完整";
+
 		BusInfo bus{
 			trainNumber.toInt(),
 			departureTime.split(":")[0].toInt(),
@@ -45,13 +48,12 @@ Q_INVOKABLE QString Backend::add(const QString& trainNumber, const QString& depa
 			capacity.toInt(),
 			soldTickets.toInt()
 		};
-		addBusInfo(bus);
-		return "ok";
+		return addBusInfo(bus);
 	}
 	catch (const std::exception& e) {
 		// 处理异常
 		qDebug() << "Caught exception: " << e.what();
-		return "error";
+		return "添加失败";
 	}
 }
 
@@ -71,17 +73,18 @@ void Backend::loadBusInfo(const QString& filename) {
 	}
 }
 
-void Backend::addBusInfo(const BusInfo& bus) {
+QString Backend::addBusInfo(const BusInfo& bus) {
 	// 确保车次号不重复
 	for (const auto& b : timetables) {
 		if (b.busNumber == bus.busNumber) {
 			qWarning() << "Bus number already exists!";
-			return;
+			return "车次号已存在";
 		}
 	}
 	timetables.append(bus);
 	// 将信息写入配置文件中
 	saveAllBusInfo();
+	return "添加成功";
 }
 
 void Backend::displayAllBusInfo() {
@@ -117,10 +120,10 @@ QString Backend::removeBusInfo(QString busNumberStr) {
 			timetables.erase(it);
 			// 将信息写入配置文件中
 			saveAllBusInfo();
-			return "ok";
+			return "删除成功";
 		}
 	}
-	return "Bus number not found!";
+	return "没有找到该车次";
 }
 
 void Backend::initSingleton()

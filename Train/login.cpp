@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
 
 	engine.rootContext()->setContextProperty("backend", &Backend::getInstance());
 
-	//engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-	engine.load(QUrl(QStringLiteral("qrc:/AdminControlPanel.qml")));
+	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+	//engine.load(QUrl(QStringLiteral("qrc:/AdminControlPanel.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
 
