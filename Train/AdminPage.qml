@@ -27,7 +27,7 @@ Item {
             onClicked: {
                 if (backend.authenticate(usernameField.text, passwordField.text)) {
                     // 进入管理员控制面板窗口，并销毁当前窗口
-                    var component = Qt.createComponent("AdminControlPanel.qml");
+                    var component = Qt.createComponent("ControlPanel.qml");
                     if (component.status === Component.Ready) {
                         var newWindow = component.createObject(parent);
                         newWindow.isAdmin = true; 

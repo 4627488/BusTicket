@@ -51,7 +51,7 @@
     <None Include="AdminPage.qml">
       <Filter>Resource Files\Source Files</Filter>
     </None>
-    <None Include="AdminControlPanel.qml">
+    <None Include="ControlPanel.qml">
       <Filter>Resource Files\Source Files</Filter>
     </None>
   </ItemGroup>

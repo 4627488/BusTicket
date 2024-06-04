@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>AdminPage.qml</file>
-        <file>AdminControlPanel.qml</file>
+        <file>ControlPanel.qml</file>
     </qresource>
 </RCC>

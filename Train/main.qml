@@ -39,7 +39,7 @@ ApplicationWindow {
                     Button {
                         text: "进入普通顾客窗口"
                         onClicked: {
-							var component = Qt.createComponent("AdminControlPanel.qml");
+							var component = Qt.createComponent("ControlPanel.qml");
                             if (component.status === Component.Ready) {
                                 var newWindow = component.createObject(parent);
                                 newWindow.isAdmin = false; 

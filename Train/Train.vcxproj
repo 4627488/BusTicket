@@ -104,7 +104,7 @@
     <ClCompile Include="login.cpp" />
     <ClCompile Include="TableModel.cpp" />
     <QtRcc Include="qml.qrc" />
-    <None Include="AdminControlPanel.qml" />
+    <None Include="ControlPanel.qml" />
     <None Include="AdminPage.qml" />
     <None Include="main.qml" />
   </ItemGroup>
