@@ -18,9 +18,10 @@ jobs:
       with:
         version: '6.7.0'
         arch: 'win64_msvc2019_64'
-        
-    - name: Set QtMsBuild
-      run: echo "QtMsBuild=$(echo ${{ runner.temp }}/Qt/6.7.0/msvc2019_64/mkspecs/features)" >> $GITHUB_ENV
+        cached: 'true'
+        host: 'windows'
+        target: 'desktop'
+        set-env: 'true'
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
