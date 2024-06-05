@@ -69,7 +69,7 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         files: |
-          ${{ runner.temp }}/build/*
+          ${{ runner.temp }}\build\
         recursive: true
         dest: bus.zip
 
