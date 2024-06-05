@@ -44,35 +44,43 @@ int TableModel::columnCount(const QModelIndex& /*parent*/) const
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
 {
-	if (role == Qt::DisplayRole) {
-		if (index.row() == 0) {
-			return m_header[index.column()];
-		}
-		std::lock_guard<std::mutex> lock(m_dataMutex);
-		auto& busItem = m_data[index.row() - 1];
-		switch (index.column())
-		{
-		case 0:
-			return busItem.busNumber;
-		case 1:
-			return QString::number(busItem.departureHour) + ":" + QString::number(busItem.departureMinute);
-		case 2:
-			return busItem.startPoint;
-		case 3:
-			return busItem.endPoint;
-		case 4:
-			return busItem.duration;
-		case 5:
-			return busItem.price;
-		case 6:
-			return busItem.maxPassenger;
-		case 7:
-			return busItem.soldTickets;
-		default:
-			break;
-		}
+	if (role != Qt::DisplayRole) {
+		return QVariant();
 	}
-	return QVariant();
+
+	if (index.row() == 0) {
+		return m_header[index.column()];
+	}
+
+	std::lock_guard<std::mutex> lock(m_dataMutex);
+
+	if (index.row() - 1 >= m_data.size()) {
+		return QVariant();
+	}
+
+	const auto& busItem = m_data[index.row() - 1];
+
+	switch (index.column())
+	{
+	case 0:
+		return busItem.busNumber;
+	case 1:
+		return QString::number(busItem.departureHour) + ":" + QString::number(busItem.departureMinute);
+	case 2:
+		return busItem.startPoint;
+	case 3:
+		return busItem.endPoint;
+	case 4:
+		return busItem.duration;
+	case 5:
+		return busItem.price;
+	case 6:
+		return busItem.maxPassenger;
+	case 7:
+		return busItem.soldTickets;
+	default:
+		return QVariant();
+	}
 }
 
 QHash<int, QByteArray> TableModel::roleNames() const
@@ -88,23 +96,21 @@ void TableModel::updateData()
 	std::lock_guard<std::mutex> lock(m_dataMutex);
 
 	//过滤
-	m_data.clear();
+	QVector<BusInfo> filtered_data;
 	for (auto& bus : all_data) {
-		if (Filter.isEmpty()) {
-			m_data.append(bus);
-			continue;
-		}
-		if (FilterOption == 0 && bus.busNumber == Filter.toInt()) {
-			m_data.append(bus);
-		}
-		else if (FilterOption == 1 && bus.startPoint == Filter) {
-			m_data.append(bus);
-		}
-		else if (FilterOption == 2 && bus.endPoint == Filter) {
-			m_data.append(bus);
+		if (Filter.isEmpty() ||
+			(FilterOption == 0 && bus.busNumber == Filter.toInt()) ||
+			(FilterOption == 1 && bus.startPoint == Filter) ||
+			(FilterOption == 2 && bus.endPoint == Filter)) {
+			filtered_data.append(bus);
 		}
 	}
-	std::sort(m_data.begin(), m_data.end(), [](const BusInfo& a, const BusInfo& b) {
+
+	//排序
+	std::sort(filtered_data.begin(), filtered_data.end(), [](const BusInfo& a, const BusInfo& b) {
 		return a.departureHour * 60 + a.departureMinute < b.departureHour * 60 + b.departureMinute;
-		});
+	});
+
+	// 更新 m_data
+	m_data = std::move(filtered_data);
 }
