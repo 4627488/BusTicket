@@ -66,8 +66,9 @@ jobs:
         windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}/Train/
 
     - name: Create Zip
-      run: |
-        zip -r bus.zip ${{ runner.temp }}/build
+      uses: montudor/action-zip
+      with:
+        args: -r bus.zip ${{ runner.temp }}/build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
