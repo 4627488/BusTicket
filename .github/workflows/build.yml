@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install QT
       uses: jurplel/install-qt-action@v4
@@ -45,25 +45,17 @@ jobs:
     - name: Create build folder
       run: |
           mkdir -p ${{ runner.temp }}\build
-    
-    - name: (5) Set Qt Environment Variables
-      run: |
-          echo "Setting Qt Environment Variables"
-          echo "QTDIR=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64" >> $GITHUB_ENV
-          echo "QtToolsPath=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64/bin" >> $GITHUB_ENV
-      shell: bash
         
     - name: Build app for release
       working-directory: ${{ github.workspace }}
       run: |
         echo "Current directory: $($PWD.Path)"
-        msbuild /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:OutDir=${{ runner.temp }}\build\ "Train.sln"
-      # msbuild Train\Train.vcxproj -t:rebuild -verbosity:diag -property:Configuration=Release -property:Platform=x64
+        msbuild /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:OutDir=${{ runner.temp }}\build\ "BusTicket.sln"
     
     - name: Package
       working-directory: ${{ runner.temp }}/build
       run: |
-        windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}/Train/
+        windeployqt BusMainApp.exe --qmldir ${{ github.workspace }}/BusTicket/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
