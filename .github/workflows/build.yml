@@ -7,17 +7,12 @@ on:
     branches: [ master ]
 
 env:
-  # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: ..
   QT_VERSION:   6.7.0
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
 
 jobs:
-  build:
+  setup:
     runs-on: windows-latest
 
     steps:
@@ -46,7 +41,7 @@ jobs:
       run: |
           mkdir -p ${{ runner.temp }}\build
     
-    - name: (5) Set Qt Environment Variables
+    - name: Set Qt Environment Variables
       run: |
           echo "Setting Qt Environment Variables"
           echo "QTDIR=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64" >> $GITHUB_ENV
@@ -54,26 +49,41 @@ jobs:
           echo "QtMsBuild=%LOCALAPPDATA%\QtMsBuild" >> $GITHUB_ENV
           ls "${{ runner.temp }}/Qt/"
       shell: bash
-        
+
+  build:
+    needs: setup
+    runs-on: windows-latest
+
+    steps:
     - name: Build app for release
       working-directory: ${{ github.workspace }}
       run: |
         echo "Current directory: $($PWD.Path)"
         msbuild /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:OutDir=${{ runner.temp }}\build\ "Train.sln"
-      # msbuild Train\Train.vcxproj -t:rebuild -verbosity:diag -property:Configuration=Release -property:Platform=x64
-    
+
+  package:
+    needs: build
+    runs-on: windows-latest
+
+    steps:
     - name: Package
       working-directory: ${{ runner.temp }}/build
       run: |
         windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}\Train
+
     - name: Create Zip
       uses: papeloto/action-zip@v1
       with:
         files: |
           ${{ runner.temp }}/build/*
         recursive: true
-        dest: ${{ runner.temp }}/build.zip
+        dest: build.zip
 
+  upload:
+    needs: package
+    runs-on: windows-latest
+
+    steps:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
