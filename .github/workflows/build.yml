@@ -1,28 +1,45 @@
-name: Build
+name: Build and Package QT Application
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-    - name: Install Qt
+    - name: Install QT
       uses: jurplel/install-qt-action@v2
       with:
-        version: '6.7.0'
+        version: '5.15.2'
         arch: 'win64_msvc2019_64'
-        dir: '${{ runner.workspace }}/Qt'
+        tools: 'tools_vcredist'
 
-    - name: Configure
-      run: |
-        echo "QTDIR=${{ runner.workspace }}/Qt/6.7.0/msvc2019_64" >> $GITHUB_ENV
-        echo "${{ runner.workspace }}/Qt/6.7.0/msvc2019_64/bin" >> $GITHUB_PATH
-        qmake -tp vc -r
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
 
-    - name: Build
+    - name: Build app for release
+      run: msbuild Train\Train.vcxproj -t:rebuild -verbosity:diag -property:Configuration=Release -property:Platform=x64
+    
+    - name: Package
       run: |
-        msbuild /m /p:Configuration=Release
+        cd Train\x64\Release
+        windeployqt TrainMainApp.exe --qmldir ../../
+
+    - name: Create Zip
+      uses: papeloto/action-zip@v1
+      with:
+        files: Train\x64\Release
+        recursive: true
+        zipname: bus.zip
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: busRelease
+        path: bus.zip
