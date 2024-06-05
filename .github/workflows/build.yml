@@ -63,7 +63,7 @@ jobs:
     - name: Package
       working-directory: ${{ runner.temp }}/build
       run: |
-        windeployqt TrainMainApp.exe --qmldir ../Train/
+        windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}/Train/
 
     - name: Create Zip
       uses: papeloto/action-zip@v1
