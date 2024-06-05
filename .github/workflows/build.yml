@@ -66,12 +66,8 @@ jobs:
         windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}/Train/
 
     - name: Create Zip
-      uses: papeloto/action-zip@v1
-      with:
-        files: |
-          ${{ runner.temp }}\
-        recursive: true
-        dest: bus.zip
+      run: |
+        zip -r bus.zip ${{ runner.temp }}/build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
