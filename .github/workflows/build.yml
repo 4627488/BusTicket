@@ -62,7 +62,7 @@ jobs:
     - name: Package
       working-directory: ${{ runner.temp }}/build
       run: |
-        windeployqt BusMainApp.exe --qmldir ${{ github.workspace }}/BusTicket/
+        windeployqt BusMainApp.exe --qmldir ${{ github.workspace }}/Bus/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
