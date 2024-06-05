@@ -16,9 +16,8 @@ jobs:
     - name: Install QT
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.15.2'
+        version: '6.7.0'
         arch: 'win64_msvc2019_64'
-        tools: 'tools_vcredist'
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
