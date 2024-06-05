@@ -33,6 +33,7 @@ jobs:
         dir:          ${{ runner.temp }}
         setup-python: false 
         set-env:      true
+        cache:        true
     
     - name: Print Qt version information
       run: |
@@ -56,7 +57,7 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: |
         echo "Current directory: $($PWD.Path)"
-        msbuild /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:OutDir=${{ runner.temp }}\build\ "..\Train.sln"
+        msbuild /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:OutDir=${{ runner.temp }}\build\ "Train.sln"
       # msbuild Train\Train.vcxproj -t:rebuild -verbosity:diag -property:Configuration=Release -property:Platform=x64
     
     - name: Package
