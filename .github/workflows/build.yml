@@ -52,7 +52,7 @@ jobs:
           echo "QTDIR=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64" >> $GITHUB_ENV
           echo "QtToolsPath=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64/bin" >> $GITHUB_ENV
           echo "QtMsBuild=%LOCALAPPDATA%\QtMsBuild" >> $GITHUB_ENV
-          ls %LOCALAPPDATA%/QtMsBuild
+          ls ${{ runner.temp }}/Qt/${{ env.QT_VERSION }}
       shell: bash
         
     - name: Build app for release
