@@ -65,11 +65,8 @@ jobs:
       run: |
         windeployqt TrainMainApp.exe --qmldir ${{ github.workspace }}/Train/
 
-    - name: Create Zip
-      run: Compress-Archive -Path ${{ runner.temp }}\build -Destination bus.zip
-
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: busRelease
-        path: bus.zip
+        path: ${{ runner.temp }}\build
