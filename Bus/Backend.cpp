@@ -4,6 +4,11 @@
 #include <QFile>
 #include <qdebug.h>
 #include <QCryptographicHash>
+#include <chrono>
+#include <iomanip>
+
+
+
 
 const QString Backend::CONFIG_FILE = "bus.txt";
 // 在类外初始化静态成员

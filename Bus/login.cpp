@@ -5,6 +5,16 @@
 #include <QQmlContext>
 #include "Backend.h"
 #include "TableModel.h"
+#include <QFile>
+
+void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+	QFile file("log.txt");
+	file.open(QIODevice::Append | QIODevice::Text);
+	QTextStream out(&file);
+	out << msg << "\n";
+	file.close();
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -15,6 +25,7 @@ int main(int argc, char* argv[])
 	QGuiApplication app(argc, argv);
 
 	qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
+	qInstallMessageHandler(messageHandler);
 
 	QQmlApplicationEngine engine;
 
