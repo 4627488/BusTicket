@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Backend">
+    <Position X="9.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAEAIIAAABBACAAAAgBBCAAwAgAAgQQACwAA=</HashCode>
+      <FileName>Backend.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableModel">
+    <Position X="6" Y="1.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAQAAAAAMAAICAgAEIEBAAAAAAAAAQAAAAABA=</HashCode>
+      <FileName>TableModel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QAbstractTableModel" Collapsed="true">
+    <Position X="6.75" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAABQAAAAAAAAAAAAAAAEAAAACAABQAQ=</HashCode>
+      <FileName>C:\Qt\6.7.0\msvc2019_64\include\QtCore\qabstractitemmodel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QObject" Collapsed="true">
+    <Position X="13" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAgAAAAQQIAgAAVUgYAAEISGAAsQiIIHBEAiIhJGACE=</HashCode>
+      <FileName>C:\Qt\6.7.0\msvc2019_64\include\QtCore\qobject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="BusInfo">
+    <Position X="3.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAgBCAIAAAAAAAAEAEAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Backend.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -5,3 +5,63 @@ Retrying to obtain clipboard.
 Retrying to obtain clipboard.
 Retrying to obtain clipboard.
 QObject::~QObject: Timers cannot be stopped from another thread
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+QObject::~QObject: Timers cannot be stopped from another thread
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Unable to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Unable to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+busNumber:  "00103"
+busNumber:  "00104"
+busNumber:  "00105"
+busNumber:  "00106"
+busNumber:  "00107"
+busNumber:  "00111"
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Unable to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Unable to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Unable to obtain clipboard.
+Retrying to obtain clipboard.
