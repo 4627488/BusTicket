@@ -1,0 +1,7 @@
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+Retrying to obtain clipboard.
+QObject::~QObject: Timers cannot be stopped from another thread

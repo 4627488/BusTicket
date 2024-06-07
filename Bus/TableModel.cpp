@@ -99,7 +99,7 @@ void TableModel::updateData()
 	QVector<BusInfo> filtered_data;
 	for (auto& bus : all_data) {
 		if (Filter.isEmpty() ||
-			(FilterOption == 0 && bus.busNumber == Filter.toInt()) ||
+			(FilterOption == 0 && bus.busNumber == Filter) ||
 			(FilterOption == 1 && bus.startPoint == Filter) ||
 			(FilterOption == 2 && bus.endPoint == Filter)) {
 			filtered_data.append(bus);

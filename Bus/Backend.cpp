@@ -6,11 +6,11 @@
 #include <QCryptographicHash>
 #include <chrono>
 #include <iomanip>
-
-
-
+#include <QDateTime>
 
 const QString Backend::CONFIG_FILE = "bus.txt";
+QString Backend::today_log = "log_" + QDateTime::currentDateTime().toString("yyyyMMdd") + ".txt";
+
 // 在类外初始化静态成员
 Backend* Backend::instance = nullptr;
 std::once_flag Backend::initInstanceFlag;
@@ -51,7 +51,7 @@ Q_INVOKABLE QString Backend::add(const QString& trainNumber, const QString& depa
 			return "信息请填写完整";
 
 		BusInfo bus{
-			trainNumber.toInt(),
+			trainNumber,
 			departureTime.split(":")[0].toInt(),
 			departureTime.split(":")[1].toInt(),
 			startStation,
@@ -71,7 +71,7 @@ Q_INVOKABLE QString Backend::add(const QString& trainNumber, const QString& depa
 }
 
 
-void Backend::loadBusInfo(const QString& filename) {
+bool Backend::loadBusInfo(const QString& filename) {
 	timetables.clear();
 	QFile file(filename);
 	if (file.open(QIODevice::ReadOnly)) {
@@ -79,11 +79,13 @@ void Backend::loadBusInfo(const QString& filename) {
 		while (!in.atEnd()) {
 			BusInfo bus;
 			in >> bus.busNumber >> bus.departureHour >> bus.departureMinute >> bus.startPoint >> bus.endPoint >> bus.duration >> bus.price >> bus.maxPassenger >> bus.soldTickets;
-			if (bus.busNumber != 0)
+			if (bus.busNumber != "")
 				timetables.append(bus);
 		}
 		file.close();
+		return true;
 	}
+	return false;
 }
 
 QString Backend::addBusInfo(const BusInfo& bus) {
@@ -96,7 +98,8 @@ QString Backend::addBusInfo(const BusInfo& bus) {
 	}
 	timetables.append(bus);
 	// 将信息写入配置文件中
-	saveAllBusInfo();
+	saveAllBusInfo(CONFIG_FILE);
+	saveAllBusInfo(today_log);
 	return "添加成功";
 }
 
@@ -114,12 +117,16 @@ void Backend::displayAllBusInfo() {
 	}
 }
 
-void Backend::saveAllBusInfo() {
-	QFile file(CONFIG_FILE);
+void Backend::saveAllBusInfo(const QString& filename) {
+	QFile file(filename);
 	if (file.open(QIODevice::WriteOnly)) { // 以只写的方式打开文件
 		QTextStream out(&file);
 		for (const auto& bus : timetables) {
-			out << bus.busNumber << "\t" << bus.departureHour << "\t" << bus.departureMinute << "\t" << bus.startPoint << "\t" << bus.endPoint << "\t" << bus.duration << "\t" << bus.price << "\t" << bus.maxPassenger << "\t" << bus.soldTickets << "\n";
+			out << bus.busNumber << "\t" << bus.departureHour << "\t" << bus.departureMinute << "\t" << bus.startPoint << "\t" << bus.endPoint << "\t" << bus.duration << "\t" << bus.price << "\t" << bus.maxPassenger << "\t";
+			if (filename == CONFIG_FILE)
+				out << 0 << "\n";  // 保存到配置文件时，将售票数置为0
+			else
+				out << bus.soldTickets << "\n";
 		}
 		file.close();
 	}
@@ -128,10 +135,10 @@ void Backend::saveAllBusInfo() {
 Q_INVOKABLE QString Backend::buyTicket(QString busNumber)
 {
 	for (auto& bus : timetables) {
-		if (bus.busNumber == busNumber.toInt()) {
+		if (bus.busNumber == busNumber) {
 			if (bus.soldTickets < bus.maxPassenger) {
 				bus.soldTickets++;
-				saveAllBusInfo();
+				saveAllBusInfo(today_log);
 				return "购票成功";
 			}
 			else {
@@ -145,10 +152,10 @@ Q_INVOKABLE QString Backend::buyTicket(QString busNumber)
 Q_INVOKABLE QString Backend::refundTicket(QString busNumber)
 {
 	for (auto& bus : timetables) {
-		if (bus.busNumber == busNumber.toInt()) {
+		if (bus.busNumber == busNumber) {
 			if (bus.soldTickets > 0) {
 				bus.soldTickets--;
-				saveAllBusInfo();
+				saveAllBusInfo(today_log);
 				return "退票成功";
 			}
 			else {
@@ -160,13 +167,14 @@ Q_INVOKABLE QString Backend::refundTicket(QString busNumber)
 }
 
 QString Backend::removeBusInfo(QString busNumberStr) {
-	int busNumber = busNumberStr.toInt();
+	//int busNumber = busNumberStr.toInt();
 	for (auto it = timetables.begin(); it != timetables.end(); ++it) {
 		qDebug() << "busNumber: " << it->busNumber;
-		if (it->busNumber == busNumber) {
+		if (it->busNumber == busNumberStr) {
 			timetables.erase(it);
 			// 将信息写入配置文件中
-			saveAllBusInfo();
+			saveAllBusInfo(CONFIG_FILE);
+			saveAllBusInfo(today_log);
 			return "删除成功";
 		}
 	}
@@ -176,5 +184,8 @@ QString Backend::removeBusInfo(QString busNumberStr) {
 void Backend::initSingleton()
 {
 	instance = new Backend();
-	instance->loadBusInfo(CONFIG_FILE);
+	if (!QFile::exists(today_log))
+		instance->loadBusInfo(CONFIG_FILE);
+	else
+		instance->loadBusInfo(today_log);
 }
