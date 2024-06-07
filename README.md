@@ -1,6 +1,5 @@
-# 2024春 C++ 课程设计
-
-汽车站车票管理
+# 2024春 C++ 课程设计 [![Build and Package QT Application](https://github.com/4627488/BusTicket/actions/workflows/build.yml/badge.svg)](https://github.com/4627488/BusTicket/actions/workflows/build.yml)
+汽车站车票管理 
 
 ## Artifacts
 
