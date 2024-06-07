@@ -2,7 +2,11 @@
 
 汽车站车票管理
 
-# Screenshot
+## Artifacts
+
+Actions 中包含了最新构建
+
+## Screenshot
 
 ![image](https://github.com/4627488/BusTicket/assets/44314811/63f34ef4-0933-4ac8-920a-6e82ab70b725)
 
